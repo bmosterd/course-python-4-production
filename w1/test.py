@@ -50,3 +50,4 @@ def test_revenue_per_region():
     assert all([len(each) > 0 for each in revenue_data])
 
     pprint(revenue_data)
+

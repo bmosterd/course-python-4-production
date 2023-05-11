@@ -112,7 +112,15 @@ class DataReader:
         }
         """
     ######################################## YOUR CODE HERE ##################################################
-
+    for row in open(self.fp, 'r'):
+        yield row
+    
+    with open(self.fp) as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        # skip the header row
+        next(reader)
+        for row in reader:
+            yield row
     ######################################## YOUR CODE HERE ##################################################
 
     def get_file_path(self):
