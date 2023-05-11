@@ -78,6 +78,17 @@ class DataProcessor:
 
         aggregate should be 105.58
         """
+        # get generator from data_reader
+        data_reader_gen = (row for row in self.data_reader)
+
+        # skip first row as it is the column name
+        _ = next(data_reader_gen)
+        
+        # Loop over Column Name and count total
+        total_count = 0
+        for row in data_reader_gen:
+            total_count += row[column_name]
+        return total_count
         ######################################## YOUR CODE HERE ##################################################
 
         ######################################## YOUR CODE HERE ##################################################
