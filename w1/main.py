@@ -3,6 +3,7 @@ from w1.data_processor import DataProcessor
 from pprint import pprint
 from typing import Dict
 from tqdm import tqdm
+from functools import reduce
 import os
 import argparse
 from global_utils import get_file_name, make_dir, plot_sales_data
@@ -43,18 +44,17 @@ def revenue_per_region(dp: DataProcessor) -> Dict:
         'United States': 121.499
     }
     """
-    ######################################## YOUR CODE HERE ##################################################
     data_reader_gen = (row for row in dp.data_reader)
     # skip first
     _ = next(data_reader_gen)
-    ######################################## YOUR CODE HERE ##################################################
-    # Calculate the total sales by country: 
-    # 1) Use set to get all unique countries
-    # 2) Use filter to only get the generator object that has TotalPrice for the given countries
-    # 3) Use reduce to sum all prices.
-    total_sales_by_country = {country: reduce(lambda x, y: x + y['TotalPrice'], filter(lambda x: x['Country'] == country, batch), 0)
-                              for country in set([item['Country'] for item in data_reader_gen])}
-    return total_sales_by_country
+    # Create dictionary and count totals. The result.get() method ensures code works even if the 
+    # key (Country) is not present in the dictionary.
+    result = {}
+    result = {row['Country']:
+              result.get(row['Country'], 0) + dp.to_float(row['TotalPrice']) for row in data_reader_gen
+             }
+
+    return result
 
 def get_sales_information(file_path: str) -> Dict:
     # Initialize
@@ -102,4 +102,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # dp = DataProcessor('/workspace/course-python-4-production/data/tst/2017.csv')
+    # print(revenue_per_region(dp))
 

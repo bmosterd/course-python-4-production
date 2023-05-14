@@ -87,8 +87,10 @@ class DataProcessor:
         # Loop over Column Name and count total
         total_count = 0
         for row in data_reader_gen:
-            total_count += row[column_name]
+            total_count += self.to_float(row[column_name])
         return total_count
-        ######################################## YOUR CODE HERE ##################################################
 
-        ######################################## YOUR CODE HERE ##################################################
+if __name__ == '__main__':
+    dp = DataProcessor('/workspace/course-python-4-production/data/tst/2015.csv')
+    res = dp.aggregate('TotalPrice')
+    print(res)
