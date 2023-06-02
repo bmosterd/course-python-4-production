@@ -167,6 +167,7 @@ def main() -> List[Dict]:
     # file_paths contains the files that needs to be processed.
     with multiprocessing.Pool(processes=n_processes) as pool:
         revenue_data = pool.starmap(run, [(batch, np) for np, batch in enumerate(batches)])
+        revenue_data = flatten(revenue_data)
         pool.close()
         pool.join()
 
